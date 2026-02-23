@@ -1,7 +1,27 @@
-#  👋 Hi, I'm Daniel
-[![Linkedin: Daniel-Ibarrola](https://img.shields.io/badge/-DanielIbarrola-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/d-ibarrola/)](https://www.linkedin.com/in/d-ibarrola/)
-[![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
-```C++
+#include <string>
+#include <vector>
+#include <set>
+
+class SoftwareEngineer {
+public:
+    std::string name;
+    std::string location;
+
+    SoftwareEngineer(const std::string& name, const std::string& location)
+        : name(name), location(location) {}
+};
+
+class Experience {
+public:
+    std::string company;
+    std::string position;
+    std::string responsibilities;
+
+    Experience(const std::string& company, const std::string& position,
+               const std::string& responsibilities)
+        : company(company), position(position), responsibilities(responsibilities) {}
+};
+
 class Daniel : public SoftwareEngineer {
 public:
     Daniel() : SoftwareEngineer("Daniel Ibarrola", "CDMX, Mexico") {}
@@ -56,4 +76,3 @@ public:
         };
     }
 };
-```

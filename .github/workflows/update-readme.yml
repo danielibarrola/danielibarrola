@@ -1,0 +1,46 @@
+name: Update README
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/'
+  schedule:
+    - cron: '0 */12 * * *'  # Run every 12 hours
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Select random file and run update script
+        run: |
+          cd src
+          FILES=("me.py" "me.ts" "me.cpp")
+          RANDOM_FILE=${FILES[$RANDOM % ${#FILES[@]}]}
+          echo "Selected file: $RANDOM_FILE"
+          python update_readme.py "$RANDOM_FILE"
+          echo "SELECTED_FILE=$RANDOM_FILE" >> $GITHUB_ENV
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add README.md
+          git diff --quiet && git diff --staged --quiet || git commit -m "Update README.md from ${{ env.SELECTED_FILE }}"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
